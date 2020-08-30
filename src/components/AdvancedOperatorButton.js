@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Pressable} from 'react-native';
 
-const OperatorButton = ({icon}) => {
+const AdvancedOperatorButton = ({label}) => {
   const [active, setActive] = React.useState(false);
 
   return (
@@ -16,23 +15,28 @@ const OperatorButton = ({icon}) => {
         onPressOut={() => {
           setActive(false);
         }}>
-        <IconLabel name={icon} />
+        <Label style={{fontVariant: ['tabular-nums']}}>{label}</Label>
       </Button>
     </Container>
   );
 };
 
 const Container = styled.View`
+  flex-grow: 1;
+  align-self: center;
   justify-content: center;
 `;
 
 const Button = styled(Pressable)`
-  padding: 32px 48px;
+  padding: 24px 32px;
+  align-items: center;
+  border-radius: 50px;
 `;
 
-const IconLabel = styled(Icon)`
-  font-size: 24px;
-  color: #3374e1;
+const Label = styled.Text`
+  font-size: 28px;
+  font-weight: 500;
+  color: #ffffff;
 `;
 
 const Overlay = styled.View`
@@ -45,4 +49,4 @@ const Overlay = styled.View`
   opacity: 0.6;
 `;
 
-export default OperatorButton;
+export default AdvancedOperatorButton;

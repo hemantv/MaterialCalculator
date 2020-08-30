@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {PanResponder, Animated, View} from 'react-native';
-import NumericGrid from './NumericGrid';
+import AdvancedOperatorGrid from './AdvancedOperatorGrid';
 
 const SidePanel = () => {
   const translateX = React.useRef(new Animated.Value(0)).current;
@@ -21,13 +21,27 @@ const SidePanel = () => {
     outputRange: [0.5, 0],
   });
 
+  const chevronAnim = React.useRef(new Animated.Value(0)).current;
+
+  const rotate = chevronAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
+
   const panResponder = React.useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (e, gestureState) => {
         if (-width.current < gestureState.dx) {
           translateX.setValue(gestureState.dx);
-          if (!expandedRef.current) setExpandedRef(true);
+          if (!expandedRef.current) {
+            setExpandedRef(true);
+            Animated.timing(chevronAnim, {
+              toValue: 1,
+              duration: 300,
+              useNativeDriver: true,
+            }).start();
+          }
         }
       },
       onPanResponderRelease: (e, gestureState) => {
@@ -38,7 +52,14 @@ const SidePanel = () => {
             duration: 300,
             useNativeDriver: true,
           }).start(() => {
-            if (expandedRef.current) setExpandedRef(false);
+            if (expandedRef.current) {
+              setExpandedRef(false);
+              Animated.timing(chevronAnim, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+              }).start();
+            }
           });
         } else {
           Animated.timing(translateX, {
@@ -68,13 +89,18 @@ const SidePanel = () => {
           transform: [{translateX}],
         }}>
         <Slider>
-          <SlideIcon name={'chevron-left'} />
+          <AnimatedSlideIcon
+            name={'chevron-left'}
+            style={{
+              transform: [{rotate}],
+            }}
+          />
         </Slider>
         <GridContainer
           onLayout={(event) => {
             width.current = event.nativeEvent.layout.width - 10;
           }}>
-          <NumericGrid />
+          <AdvancedOperatorGrid />
         </GridContainer>
       </AnimatedContainer>
     </>
@@ -97,6 +123,8 @@ const SlideIcon = styled(Icon)`
   color: #ffffff;
   font-size: 32px;
 `;
+
+const AnimatedSlideIcon = Animated.createAnimatedComponent(SlideIcon);
 
 const GridContainer = styled.View``;
 
