@@ -33,6 +33,9 @@ const Container = styled.View``;
 
 const Row = styled.View`
   flex-direction: row;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
 `;
 
 export default NumericGrid;

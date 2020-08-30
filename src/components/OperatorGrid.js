@@ -5,15 +5,19 @@ import OperatorButton from './OperatorButton';
 const OperatorGrid = () => {
   return (
     <Container>
-      <OperatorButton icon={'backspace-outline'} />
-      <OperatorButton icon={'division'} />
-      <OperatorButton icon={'close'} />
-      <OperatorButton icon={'minus'} />
-      <OperatorButton icon={'plus'} />
+      <Column>
+        <OperatorButton icon={'backspace-outline'} />
+        <OperatorButton icon={'division'} />
+        <OperatorButton icon={'close'} />
+        <OperatorButton icon={'minus'} />
+        <OperatorButton icon={'plus'} />
+      </Column>
     </Container>
   );
 };
 
 const Container = styled.View``;
+
+const Column = styled.View``;
 
 export default OperatorGrid;
