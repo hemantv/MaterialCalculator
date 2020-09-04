@@ -12,18 +12,19 @@ import styled from 'styled-components';
 import ButtonPanel from './src/components/ButtonPanel';
 import OutputPanel from './src/components/OutputPanel';
 import MenuPanel from './src/components/MenuPanel';
+import {Provider} from 'react-redux';
+import store from './src/redux/store';
+import {Dimensions, StatusBar} from 'react-native';
 
 const App = () => {
   return (
-    <>
-      <SafeAreaView style={{flex: 1}}>
-        <Container>
-          <MenuPanel />
-          <OutputPanel />
-          <ButtonPanel />
-        </Container>
-      </SafeAreaView>
-    </>
+    <Provider store={store}>
+      <Container>
+        <MenuPanel />
+        <OutputPanel />
+        <ButtonPanel />
+      </Container>
+    </Provider>
   );
 };
 

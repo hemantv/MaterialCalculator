@@ -1,20 +1,32 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Pressable} from 'react-native';
+import {Pressable, Animated} from 'react-native';
 
-const AdvancedOperatorButton = ({label}) => {
-  const [active, setActive] = React.useState(false);
+const AdvancedOperatorButton = ({label, onPress}) => {
+  const rippleAnimation = React.useRef(new Animated.Value(0)).current;
+
+  const animateRipple = () => {
+    Animated.timing(rippleAnimation, {
+      toValue: 5,
+      timing: 100,
+      useNativeDriver: true,
+    }).start(() => {
+      rippleAnimation.setValue(0);
+    });
+  };
 
   return (
     <Container>
-      {active && <Overlay />}
+      <AnimatedRipple
+        style={{
+          transform: [{scale: rippleAnimation}],
+        }}
+      />
       <Button
         onPressIn={() => {
-          setActive(true);
+          animateRipple();
         }}
-        onPressOut={() => {
-          setActive(false);
-        }}>
+        onPress={onPress}>
         <Label style={{fontVariant: ['tabular-nums']}}>{label}</Label>
       </Button>
     </Container>
@@ -23,8 +35,6 @@ const AdvancedOperatorButton = ({label}) => {
 
 const Container = styled.View`
   flex-grow: 1;
-  align-self: center;
-  justify-content: center;
 `;
 
 const Button = styled(Pressable)`
@@ -42,11 +52,22 @@ const Label = styled.Text`
 const Overlay = styled.View`
   position: absolute;
   align-self: center;
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
   background-color: #dddddd;
   opacity: 0.6;
 `;
+
+const Ripple = styled.View`
+  position: absolute;
+  align-self: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+`;
+
+const AnimatedRipple = Animated.createAnimatedComponent(Ripple);
 
 export default AdvancedOperatorButton;

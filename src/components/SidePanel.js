@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {PanResponder, Animated, View} from 'react-native';
+import {PanResponder, Animated, View, Pressable} from 'react-native';
 import AdvancedOperatorGrid from './AdvancedOperatorGrid';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const SidePanel = () => {
   const translateX = React.useRef(new Animated.Value(0)).current;
@@ -74,6 +75,40 @@ const SidePanel = () => {
     }),
   ).current;
 
+  const toggleSlider = () => {
+    if (expandedRef.current) {
+      translateX.flattenOffset();
+      Animated.timing(translateX, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => {
+        if (expandedRef.current) {
+          setExpandedRef(false);
+          Animated.timing(chevronAnim, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+          }).start();
+        }
+      });
+    } else {
+      setExpandedRef(true);
+      Animated.timing(translateX, {
+        toValue: -width.current,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => {
+        translateX.extractOffset();
+      });
+      Animated.timing(chevronAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  };
+
   return (
     <>
       {expandedRef.current && (
@@ -88,7 +123,7 @@ const SidePanel = () => {
         style={{
           transform: [{translateX}],
         }}>
-        <Slider>
+        <Slider onPress={toggleSlider}>
           <AnimatedSlideIcon
             name={'chevron-left'}
             style={{
@@ -97,6 +132,10 @@ const SidePanel = () => {
           />
         </Slider>
         <GridContainer
+          style={{
+            paddingTop: getStatusBarHeight() / 2,
+            paddingBottom: getStatusBarHeight() / 2,
+          }}
           onLayout={(event) => {
             width.current = event.nativeEvent.layout.width - 10;
           }}>
@@ -117,7 +156,10 @@ const Container = styled.View`
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
 
-const Slider = styled.View``;
+const Slider = styled(Pressable)`
+  height: 100%;
+  justify-content: center;
+`;
 
 const SlideIcon = styled(Icon)`
   color: #ffffff;

@@ -1,21 +1,34 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Pressable} from 'react-native';
+import {Pressable, Animated} from 'react-native';
 
-const OperatorButton = ({icon}) => {
-  const [active, setActive] = React.useState(false);
+const OperatorButton = ({icon, value, onPress, onLongPress}) => {
+  const rippleAnimation = React.useRef(new Animated.Value(0)).current;
+
+  const animateRipple = () => {
+    Animated.timing(rippleAnimation, {
+      toValue: 6,
+      timing: 100,
+      useNativeDriver: true,
+    }).start(() => {
+      rippleAnimation.setValue(0);
+    });
+  };
 
   return (
     <Container>
-      {active && <Overlay />}
+      <AnimatedRipple
+        style={{
+          transform: [{scale: rippleAnimation}],
+        }}
+      />
       <Button
         onPressIn={() => {
-          setActive(true);
+          animateRipple();
         }}
-        onPressOut={() => {
-          setActive(false);
-        }}>
+        onPress={onPress}
+        onLongPress={onLongPress}>
         <IconLabel name={icon} />
       </Button>
     </Container>
@@ -38,11 +51,22 @@ const IconLabel = styled(Icon)`
 const Overlay = styled.View`
   position: absolute;
   align-self: center;
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
   background-color: #dddddd;
   opacity: 0.6;
 `;
+
+const Ripple = styled.View`
+  position: absolute;
+  align-self: center;
+  background-color: rgba(221, 221, 221, 0.6);
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+`;
+
+const AnimatedRipple = Animated.createAnimatedComponent(Ripple);
 
 export default OperatorButton;

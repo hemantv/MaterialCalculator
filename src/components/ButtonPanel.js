@@ -17,7 +17,6 @@ const ButtonPanel = () => {
 
 const Container = styled.View`
   flex-direction: row;
-  background-color: #f2f3f5;
 `;
 
 const Separator = styled.View`

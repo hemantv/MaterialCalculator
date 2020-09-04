@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const MenuPanel = () => {
   return (
-    <Container>
+    <Container style={{paddingTop: getStatusBarHeight()}}>
       <Label>RAD</Label>
       <MenuIcon name={'dots-vertical'}></MenuIcon>
     </Container>
