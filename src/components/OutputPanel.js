@@ -10,7 +10,7 @@ const OutputPanel = () => {
   const [inputWidth, setInputWidth] = React.useState(0);
   const [fontScale, setFontScale] = React.useState(1);
 
-  const expression = useSelector((state) => state.expression);
+  const expression = useSelector((state) => state.inputs);
   const output = useSelector((state) => state.output);
   const cleared = useSelector((state) => state.clear);
   const error = useSelector((state) => state.error);
@@ -81,7 +81,7 @@ const OutputPanel = () => {
         }}
       />
       <InputText
-        value={expression}
+        value={expression.map((item) => item.label).join('')}
         style={{
           width: inputWidth,
           fontSize: 80 * fontScale,

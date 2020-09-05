@@ -15,10 +15,10 @@ const operatorData = [
     type: CLEAR_LAST_INPUT,
     secondaryType: CLEAR_EXPRESSION,
   },
-  {icon: 'division', value: '/', type: INPUT_OPERATOR},
-  {icon: 'close', value: '*', type: INPUT_OPERATOR},
-  {icon: 'minus', value: '-', type: INPUT_OPERATOR},
-  {icon: 'plus', value: '+', type: INPUT_OPERATOR},
+  {label: '÷', value: '/', type: INPUT_OPERATOR},
+  {label: '×', value: '*', type: INPUT_OPERATOR},
+  {label: '−', value: '-', type: INPUT_OPERATOR},
+  {label: '+', value: '+', type: INPUT_OPERATOR},
 ];
 
 const OperatorGrid = () => {

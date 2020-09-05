@@ -8,7 +8,7 @@ const advancedOperatorData = [
   [
     {label: 'INV'},
     {label: 'DEG'},
-    {label: '%', value: '%', type: INPUT_ADVANCED_OPERATOR},
+    {label: '%', value: '/100', type: INPUT_ADVANCED_OPERATOR},
   ],
   [
     {label: 'sin', value: 'sin(', type: INPUT_ADVANCED_OPERATOR},
@@ -18,10 +18,10 @@ const advancedOperatorData = [
   [
     {label: 'ln', value: 'ln(', type: INPUT_ADVANCED_OPERATOR},
     {label: 'log', value: 'log(', type: INPUT_ADVANCED_OPERATOR},
-    {label: '√', value: '√', type: INPUT_ADVANCED_OPERATOR},
+    {label: '√', value: 'root(', type: INPUT_ADVANCED_OPERATOR},
   ],
   [
-    {label: 'π', value: Math.PI, type: INPUT_ADVANCED_OPERATOR},
+    {label: 'π', value: 'pi', type: INPUT_ADVANCED_OPERATOR},
     {label: 'e', value: 'e', type: INPUT_ADVANCED_OPERATOR},
     {label: '^', value: '^', type: INPUT_ADVANCED_OPERATOR},
   ],

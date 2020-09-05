@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Pressable, Animated} from 'react-native';
 
-const OperatorButton = ({icon, value, onPress, onLongPress}) => {
+const OperatorButton = ({label, value, onPress, onLongPress, icon}) => {
   const rippleAnimation = React.useRef(new Animated.Value(0)).current;
 
   const animateRipple = () => {
@@ -29,7 +29,11 @@ const OperatorButton = ({icon, value, onPress, onLongPress}) => {
         }}
         onPress={onPress}
         onLongPress={onLongPress}>
-        <IconLabel name={icon} />
+        {label ? (
+          <Label style={{fontVariant: ['tabular-nums']}}>{label}</Label>
+        ) : (
+          <IconLabel name={icon} />
+        )}
       </Button>
     </Container>
   );
@@ -40,7 +44,13 @@ const Container = styled.View`
 `;
 
 const Button = styled(Pressable)`
-  padding: 32px 48px;
+  padding: 24px 48px;
+`;
+
+const Label = styled.Text`
+  font-size: 32px;
+  font-weight: 500;
+  color: #3374e1;
 `;
 
 const IconLabel = styled(Icon)`

@@ -11,11 +11,10 @@ const {
 import * as mexp from 'math-expression-evaluator';
 
 const initialState = {
-  expression: '',
+  inputs: [],
   output: '',
   clear: false,
   error: null,
-  previousExpressions: [],
 };
 
 const evaluateExpression = (expression) => {
@@ -28,10 +27,13 @@ const evaluateExpression = (expression) => {
   return output;
 };
 
+const getExpression = (inputs) => {
+  return inputs.map((item) => item.value).join('');
+};
+
 const calculatorReducer = (state = initialState, action) => {
-  let expression = state.expression;
+  let inputs = state.inputs;
   let output = state.output;
-  let previousExpressions = state.previousExpressions;
   let clear = state.clear;
   let error = false;
 
@@ -39,33 +41,32 @@ const calculatorReducer = (state = initialState, action) => {
     case INPUT_NUMBER:
     case INPUT_OPERATOR:
     case INPUT_ADVANCED_OPERATOR:
-      let {label, value} = action.payload;
-      expression = expression + value;
-      output = evaluateExpression(expression);
+      let item = action.payload;
+      inputs = [...inputs, item];
+      output = evaluateExpression(getExpression(inputs));
       break;
     case CLEAR_LAST_CHARACTER:
-      expression = state.expression.substr(0, state.expression.length - 1);
-      output = evaluateExpression(expression);
+      inputs = inputs.slice(0, inputs.length - 1);
+      output = evaluateExpression(getExpression(inputs));
       break;
     case CLEAR_EXPRESSION:
-      if (expression.length > 0) {
-        expression = '';
-        output = evaluateExpression(expression);
+      if (inputs.length > 0) {
+        inputs = [];
+        output = '';
         clear = true;
       }
       break;
     case EVALUATE_EXPRESSION:
       try {
-        output = mexp.eval(expression);
+        const evaluation = mexp.eval(getExpression(inputs));
+        inputs = [{label: evaluation, value: evaluation}];
       } catch (e) {
-        console.log(typeof e);
+        console.log(e);
         error = true;
         output = 'Bad expression';
         break;
       }
-      expression = output + '';
       output = '';
-      previousExpressions = [...previousExpressions, expression];
       break;
     case RESET_CLEAR:
       clear = false;
@@ -73,9 +74,8 @@ const calculatorReducer = (state = initialState, action) => {
   }
   return {
     ...state,
-    expression: expression,
+    inputs: inputs,
     output: output,
-    previousExpressions: previousExpressions,
     clear: clear,
     error: error,
   };
