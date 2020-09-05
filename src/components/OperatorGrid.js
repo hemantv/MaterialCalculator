@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import OperatorButton from './OperatorButton';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {
   INPUT_OPERATOR,
@@ -10,11 +10,6 @@ import {
 } from '../redux/actions';
 
 const operatorData = [
-  {
-    icon: 'backspace-outline',
-    type: CLEAR_LAST_INPUT,
-    secondaryType: CLEAR_EXPRESSION,
-  },
   {label: '÷', value: '/', type: INPUT_OPERATOR},
   {label: '×', value: '*', type: INPUT_OPERATOR},
   {label: '−', value: '-', type: INPUT_OPERATOR},
@@ -23,10 +18,35 @@ const operatorData = [
 
 const OperatorGrid = () => {
   const dispatch = useDispatch();
+  const evaluated = useSelector((state) => state.evaluated);
 
   return (
     <Container style={{paddingBottom: getStatusBarHeight() / 2}}>
       <Column>
+        {evaluated ? (
+          <OperatorButton
+            label={'C'}
+            onPress={() => {
+              dispatch({
+                type: CLEAR_EXPRESSION,
+              });
+            }}
+          />
+        ) : (
+          <OperatorButton
+            icon={'backspace-outline'}
+            onPress={() => {
+              dispatch({
+                type: CLEAR_LAST_INPUT,
+              });
+            }}
+            onLongPress={() => {
+              dispatch({
+                type: CLEAR_EXPRESSION,
+              });
+            }}
+          />
+        )}
         {operatorData.map((operator) => (
           <OperatorButton
             {...operator}
@@ -35,13 +55,6 @@ const OperatorGrid = () => {
                 type: operator.type,
                 payload: operator,
               });
-            }}
-            onLongPress={() => {
-              operator.secondaryType &&
-                dispatch({
-                  type: operator.secondaryType,
-                  payload: operator,
-                });
             }}
           />
         ))}

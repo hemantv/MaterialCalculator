@@ -8,20 +8,25 @@ const {
   RESET_ERROR,
   INPUT_ADVANCED_OPERATOR,
   TOGGLE_MODE,
+  TOGGLE_INVERSE,
 } = require('./actions');
 import mexp from 'math-expression-evaluator';
+import {MODE_DEGREE, MODE_RADIAN} from '../utils/Constants';
 
 const initialState = {
-  mode: 'RAD',
+  mode: MODE_RADIAN,
+  inverse: false,
   inputs: [],
   output: '',
   clear: false,
-  error: null,
+  evaluated: false,
+  error: false,
 };
 
 const evaluateExpression = (expression) => {
   let output;
   try {
+    console.log(expression);
     output = mexp.eval(expression);
   } catch (e) {
     console.log(e);
@@ -35,16 +40,21 @@ const getExpression = (inputs, mode) => {
 
 const calculatorReducer = (state = initialState, action) => {
   let mode = state.mode;
+  let inverse = state.inverse;
   let inputs = state.inputs;
   let output = state.output;
   let clear = state.clear;
   let error = false;
+  let evaluated = false;
 
   switch (action.type) {
     case TOGGLE_MODE:
-      mode = mode == 'RAD' ? 'DEG' : 'RAD';
-      mexp.changeMode(mode == 'DEG');
+      mode = mode == MODE_RADIAN ? MODE_DEGREE : MODE_RADIAN;
+      mexp.changeMode(mode == MODE_DEGREE);
       output = evaluateExpression(getExpression(inputs, mode));
+      break;
+    case TOGGLE_INVERSE:
+      inverse = !inverse;
       break;
     case INPUT_NUMBER:
     case INPUT_OPERATOR:
@@ -66,7 +76,6 @@ const calculatorReducer = (state = initialState, action) => {
       break;
     case EVALUATE_EXPRESSION:
       try {
-        inputs = [{label: 'sin(30)', value: 'sin(30)'}];
         const evaluation = mexp.eval(getExpression(inputs, mode));
         inputs = [{label: evaluation, value: evaluation}];
       } catch (e) {
@@ -75,6 +84,7 @@ const calculatorReducer = (state = initialState, action) => {
         output = 'Bad expression';
         break;
       }
+      evaluated = true;
       output = '';
       break;
     case RESET_CLEAR:
@@ -84,9 +94,11 @@ const calculatorReducer = (state = initialState, action) => {
   return {
     ...state,
     mode: mode,
+    inverse: inverse,
     inputs: inputs,
     output: output,
     clear: clear,
+    evaluated: evaluated,
     error: error,
   };
 };
