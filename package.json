@@ -10,7 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "math-expression-evaluator": "^1.2.22",
+    "math-expression-evaluator": "git+https://github.com/hemantv/math-expression-evaluator.git",
     "react": "16.13.1",
     "react-native": "0.63.2",
     "react-native-status-bar-height": "^2.5.0",

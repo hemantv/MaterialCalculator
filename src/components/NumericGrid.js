@@ -42,7 +42,7 @@ const NumericGrid = () => {
                 onPress={(e) => {
                   dispatch({
                     type: dataCol.type,
-                    payload: {label: dataCol.label, value: dataCol.value},
+                    payload: dataCol,
                   });
                 }}
               />

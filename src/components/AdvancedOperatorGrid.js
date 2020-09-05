@@ -46,7 +46,7 @@ const AdvancedOperatorGrid = () => {
                 onPress={() => {
                   dispatch({
                     type: dataCol.type,
-                    payload: {label: dataCol.label, value: dataCol.value},
+                    payload: dataCol,
                   });
                 }}
               />

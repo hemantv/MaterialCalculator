@@ -7,10 +7,12 @@ const {
   RESET_CLEAR,
   RESET_ERROR,
   INPUT_ADVANCED_OPERATOR,
+  TOGGLE_MODE,
 } = require('./actions');
-import * as mexp from 'math-expression-evaluator';
+import mexp from 'math-expression-evaluator';
 
 const initialState = {
+  mode: 'RAD',
   inputs: [],
   output: '',
   clear: false,
@@ -27,27 +29,33 @@ const evaluateExpression = (expression) => {
   return output;
 };
 
-const getExpression = (inputs) => {
+const getExpression = (inputs, mode) => {
   return inputs.map((item) => item.value).join('');
 };
 
 const calculatorReducer = (state = initialState, action) => {
+  let mode = state.mode;
   let inputs = state.inputs;
   let output = state.output;
   let clear = state.clear;
   let error = false;
 
   switch (action.type) {
+    case TOGGLE_MODE:
+      mode = mode == 'RAD' ? 'DEG' : 'RAD';
+      mexp.changeMode(mode == 'DEG');
+      output = evaluateExpression(getExpression(inputs, mode));
+      break;
     case INPUT_NUMBER:
     case INPUT_OPERATOR:
     case INPUT_ADVANCED_OPERATOR:
       let item = action.payload;
       inputs = [...inputs, item];
-      output = evaluateExpression(getExpression(inputs));
+      output = evaluateExpression(getExpression(inputs, mode));
       break;
     case CLEAR_LAST_CHARACTER:
       inputs = inputs.slice(0, inputs.length - 1);
-      output = evaluateExpression(getExpression(inputs));
+      output = evaluateExpression(getExpression(inputs, mode));
       break;
     case CLEAR_EXPRESSION:
       if (inputs.length > 0) {
@@ -58,7 +66,8 @@ const calculatorReducer = (state = initialState, action) => {
       break;
     case EVALUATE_EXPRESSION:
       try {
-        const evaluation = mexp.eval(getExpression(inputs));
+        inputs = [{label: 'sin(30)', value: 'sin(30)'}];
+        const evaluation = mexp.eval(getExpression(inputs, mode));
         inputs = [{label: evaluation, value: evaluation}];
       } catch (e) {
         console.log(e);
@@ -74,6 +83,7 @@ const calculatorReducer = (state = initialState, action) => {
   }
   return {
     ...state,
+    mode: mode,
     inputs: inputs,
     output: output,
     clear: clear,

@@ -33,14 +33,14 @@ const OperatorGrid = () => {
             onPress={() => {
               dispatch({
                 type: operator.type,
-                payload: {label: operator.label, value: operator.value},
+                payload: operator,
               });
             }}
             onLongPress={() => {
               operator.secondaryType &&
                 dispatch({
                   type: operator.secondaryType,
-                  payload: {label: operator.label, value: operator.value},
+                  payload: operator,
                 });
             }}
           />
