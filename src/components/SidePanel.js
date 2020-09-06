@@ -4,6 +4,12 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {PanResponder, Animated, View, Pressable} from 'react-native';
 import AdvancedOperatorGrid from './AdvancedOperatorGrid';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
+import theme from 'styled-theming';
+
+const backgroundColor = theme('mode', {
+  light: '#3374e0',
+  dark: '#244fa0',
+});
 
 const SidePanel = () => {
   const translateX = React.useRef(new Animated.Value(0)).current;
@@ -147,11 +153,10 @@ const SidePanel = () => {
 };
 
 const Container = styled.View`
-  background-color: #000000;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: #3374e1;
+  background-color: ${backgroundColor};
 `;
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);

@@ -100,8 +100,7 @@ const advancedOperatorData = [
 
 const AdvancedOperatorGrid = () => {
   const dispatch = useDispatch();
-  const inverse = useSelector((state) => state.inverse);
-  const mode = useSelector((state) => state.mode);
+  const {inverse, mode} = useSelector((state) => state.calculator);
 
   return (
     <Container>

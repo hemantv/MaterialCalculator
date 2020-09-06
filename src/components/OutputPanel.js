@@ -3,17 +3,32 @@ import styled from 'styled-components/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dimensions, Animated} from 'react-native';
 import {RESET_CLEAR} from '../redux/actions';
+import theme from 'styled-theming';
 
 const {width} = Dimensions.get('window');
+
+const backgroundColor = theme('mode', {
+  light: '#ffffff',
+  dark: '#2e3033',
+});
+
+const expressionColor = theme('mode', {
+  light: '#202124',
+  dark: '#e8eaed',
+});
+
+const outputColor = theme('mode', {
+  light: '#81868a',
+  dark: '#9ba0a5',
+});
 
 const OutputPanel = () => {
   const [inputWidth, setInputWidth] = React.useState(0);
   const [fontScale, setFontScale] = React.useState(1);
 
-  const expression = useSelector((state) => state.inputs);
-  const output = useSelector((state) => state.output);
-  const cleared = useSelector((state) => state.clear);
-  const error = useSelector((state) => state.error);
+  const {inputs, output, cleared, error} = useSelector(
+    (state) => state.calculator,
+  );
 
   const dispatch = useDispatch();
 
@@ -81,7 +96,7 @@ const OutputPanel = () => {
         }}
       />
       <InputText
-        value={expression.map((item) => item.label).join('')}
+        value={inputs.map((item) => item.label).join('')}
         style={{
           width: inputWidth,
           fontSize: 80 * fontScale,
@@ -110,18 +125,21 @@ const Container = styled.View`
   flex: 1;
   justify-content: space-around;
   padding: 16px;
+  background-color: ${backgroundColor};
 `;
 
 const InputText = styled.TextInput`
   align-self: flex-end;
   font-size: 80px;
   font-weight: 500;
+  color: ${expressionColor};
 `;
 
 const OutputText = styled.Text`
   align-self: flex-end;
   font-size: 40px;
   letter-spacing: 4px;
+  color: ${outputColor};
 `;
 
 const ClearRipple = styled.View`

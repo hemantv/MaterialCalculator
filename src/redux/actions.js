@@ -8,3 +8,5 @@ export const CLEAR_LAST_INPUT = 'CLEAR_LAST_INPUT';
 export const CLEAR_EXPRESSION = 'CLEAR_EXPRESSION';
 export const RESET_CLEAR = 'RESET_CLEAR';
 export const RESET_ERROR = 'RESET_ERROR';
+
+export const CHANGE_THEME = 'CHANGE_THEME';

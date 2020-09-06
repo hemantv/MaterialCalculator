@@ -1,6 +1,17 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {Pressable, Animated} from 'react-native';
+import theme from 'styled-theming';
+
+const foregroundColor = theme('mode', {
+  light: '#ffffff',
+  dark: '#e8eaed',
+});
+
+const selectedBackgroundColor = theme('mode', {
+  light: 'rgba(255, 255, 255, 0.2)',
+  dark: 'rgba(0, 0, 0, 0.2)',
+});
 
 const AdvancedOperatorButton = ({label, onPress, selected, superLabel}) => {
   const rippleAnimation = React.useRef(new Animated.Value(0)).current;
@@ -23,7 +34,7 @@ const AdvancedOperatorButton = ({label, onPress, selected, superLabel}) => {
         }}
       />
       <Button
-        style={selected && {backgroundColor: 'rgba(255, 255, 255, 0.2)'}}
+        selected={selected}
         onPressIn={() => {
           animateRipple();
         }}
@@ -44,6 +55,8 @@ const Container = styled.View`
 const Button = styled(Pressable)`
   padding: 24px 32px;
   align-items: center;
+  background-color: ${(props) =>
+    props.selected ? selectedBackgroundColor : 'transparent'};
 `;
 
 const LabelContainer = styled.View`
@@ -53,23 +66,13 @@ const LabelContainer = styled.View`
 const Label = styled.Text`
   font-size: 28px;
   font-weight: 500;
-  color: #ffffff;
+  color: ${foregroundColor};
 `;
 
 const SuperLabel = styled.Text`
   font-size: 20px;
   font-weight: 500;
-  color: #ffffff;
-`;
-
-const Overlay = styled.View`
-  position: absolute;
-  align-self: center;
-  width: 100px;
-  height: 100px;
-  border-radius: 50px;
-  background-color: #dddddd;
-  opacity: 0.6;
+  color: ${foregroundColor};
 `;
 
 const Ripple = styled.View`

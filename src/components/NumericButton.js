@@ -1,6 +1,12 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {Pressable, Animated} from 'react-native';
+import theme from 'styled-theming';
+
+const foregroundColor = theme('mode', {
+  light: '#202124',
+  dark: '#e8eaed',
+});
 
 const NumericButton = ({label, value, onPress, onLongPress}) => {
   const rippleAnimation = React.useRef(new Animated.Value(0)).current;
@@ -48,16 +54,7 @@ const Button = styled(Pressable)`
 const Label = styled.Text`
   font-size: 32px;
   font-weight: 500;
-`;
-
-const Overlay = styled.View`
-  position: absolute;
-  align-self: center;
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: #dddddd;
-  opacity: 0.6;
+  color: ${foregroundColor};
 `;
 
 const Ripple = styled.View`

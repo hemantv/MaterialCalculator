@@ -9,9 +9,11 @@ const {
   INPUT_ADVANCED_OPERATOR,
   TOGGLE_MODE,
   TOGGLE_INVERSE,
+  CHANGE_THEME,
 } = require('./actions');
 import mexp from 'math-expression-evaluator';
 import {MODE_DEGREE, MODE_RADIAN} from '../utils/Constants';
+import {combineReducers} from 'redux';
 
 const initialState = {
   mode: MODE_RADIAN,
@@ -103,4 +105,22 @@ const calculatorReducer = (state = initialState, action) => {
   };
 };
 
-export default calculatorReducer;
+const themeInitialState = {
+  mode: 'light',
+};
+
+const themeReducer = (state = themeInitialState, action) => {
+  let mode = state.mode;
+  if (action.type == CHANGE_THEME) {
+    mode = action.payload;
+  }
+  return {
+    ...state,
+    mode: mode,
+  };
+};
+
+export default combineReducers({
+  calculator: calculatorReducer,
+  theme: themeReducer,
+});

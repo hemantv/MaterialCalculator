@@ -8,6 +8,7 @@ import {
   CLEAR_LAST_INPUT,
   CLEAR_EXPRESSION,
 } from '../redux/actions';
+import theme from 'styled-theming';
 
 const operatorData = [
   {label: '÷', value: '/', type: INPUT_OPERATOR},
@@ -16,9 +17,14 @@ const operatorData = [
   {label: '+', value: '+', type: INPUT_OPERATOR},
 ];
 
+const backgroundColor = theme('mode', {
+  light: '#f1f3f4',
+  dark: '#202124',
+});
+
 const OperatorGrid = () => {
   const dispatch = useDispatch();
-  const evaluated = useSelector((state) => state.evaluated);
+  const {evaluated} = useSelector((state) => state.calculator);
 
   return (
     <Container style={{paddingBottom: getStatusBarHeight() / 2}}>
@@ -64,7 +70,7 @@ const OperatorGrid = () => {
 };
 
 const Container = styled.View`
-  background-color: #f2f3f5;
+  background-color: ${backgroundColor};
 `;
 
 const Column = styled.View``;

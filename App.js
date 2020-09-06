@@ -6,25 +6,51 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import {SafeAreaView} from 'react-native';
-import styled from 'styled-components';
+import React, {useEffect} from 'react';
+import {Appearance} from 'react-native';
+import styled, {ThemeProvider} from 'styled-components';
 import ButtonPanel from './src/components/ButtonPanel';
 import OutputPanel from './src/components/OutputPanel';
 import MenuPanel from './src/components/MenuPanel';
-import {Provider} from 'react-redux';
+import {Provider, useSelector, useDispatch} from 'react-redux';
 import store from './src/redux/store';
-import {Dimensions, StatusBar} from 'react-native';
+import {useAsyncStorage} from '@react-native-community/async-storage';
+import {CHANGE_THEME} from './src/redux/actions';
 
 const App = () => {
   return (
     <Provider store={store}>
+      <AppContainer></AppContainer>
+    </Provider>
+  );
+};
+
+const AppContainer = () => {
+  const {getItem, setItem} = useAsyncStorage('@theme');
+
+  const {mode} = useSelector((state) => state.theme);
+  const dispatch = useDispatch();
+
+  const getSelectedTheme = async () => {
+    let theme = await getItem();
+    if (theme == null) {
+      theme = 'light';
+    }
+    dispatch({type: CHANGE_THEME, payload: theme});
+  };
+
+  useEffect(() => {
+    getSelectedTheme();
+  }, []);
+
+  return (
+    <ThemeProvider theme={{mode}}>
       <Container>
         <MenuPanel />
         <OutputPanel />
         <ButtonPanel />
       </Container>
-    </Provider>
+    </ThemeProvider>
   );
 };
 

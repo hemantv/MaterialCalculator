@@ -4,6 +4,7 @@ import NumericButton from './NumericButton';
 import {useDispatch} from 'react-redux';
 import {INPUT_NUMBER, EVALUATE_EXPRESSION} from '../redux/actions';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
+import theme from 'styled-theming';
 
 const numericGridData = [
   [
@@ -27,6 +28,11 @@ const numericGridData = [
     {label: '=', value: '=', type: EVALUATE_EXPRESSION},
   ],
 ];
+
+const backgroundColor = theme('mode', {
+  light: '#f1f3f4',
+  dark: '#202124',
+});
 
 const NumericGrid = () => {
   const dispatch = useDispatch();
@@ -55,7 +61,7 @@ const NumericGrid = () => {
 };
 
 const Container = styled.View`
-  background-color: #f2f3f5;
+  background-color: ${backgroundColor};
 `;
 
 const Row = styled.View`

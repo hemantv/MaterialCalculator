@@ -10,14 +10,18 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.12.0",
     "math-expression-evaluator": "git+https://github.com/hemantv/math-expression-evaluator.git",
     "react": "16.13.1",
     "react-native": "0.63.2",
+    "react-native-material-dialog": "file:../../GitHub/react-native-material-dialog",
+    "react-native-material-menu": "^1.1.3",
     "react-native-status-bar-height": "^2.5.0",
     "react-native-vector-icons": "^7.0.0",
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "styled-theming": "^2.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

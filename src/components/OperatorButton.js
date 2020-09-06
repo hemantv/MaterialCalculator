@@ -2,6 +2,12 @@ import React from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Pressable, Animated} from 'react-native';
+import theme from 'styled-theming';
+
+const buttonColor = theme('mode', {
+  light: '#3374e0',
+  dark: '#92b4f3',
+});
 
 const OperatorButton = ({label, value, onPress, onLongPress, icon}) => {
   const rippleAnimation = React.useRef(new Animated.Value(0)).current;
@@ -50,22 +56,12 @@ const Button = styled(Pressable)`
 const Label = styled.Text`
   font-size: 32px;
   font-weight: 500;
-  color: #3374e1;
+  color: ${buttonColor};
 `;
 
 const IconLabel = styled(Icon)`
   font-size: 24px;
-  color: #3374e1;
-`;
-
-const Overlay = styled.View`
-  position: absolute;
-  align-self: center;
-  width: 100px;
-  height: 100px;
-  border-radius: 50px;
-  background-color: #dddddd;
-  opacity: 0.6;
+  color: ${buttonColor};
 `;
 
 const Ripple = styled.View`
